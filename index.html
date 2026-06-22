@@ -7,135 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-    <!-- Стили Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Стили для кластеризации (ОБЯЗАТЕЛЬНО в <head>) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="css/style.css">
 
-    
-    <!-- <style>
-        body { 
-            margin: 0; 
-            padding: 0; 
-            font-family: sans-serif; 
-        }
-
-        /* 2. ИСПРАВЛЕНИЕ: Карта обязана иметь высоту, иначе она не отобразится */
-        #map { 
-            height: 100vh; /* 100% высоты экрана */
-            width: 100%; 
-        }
-
-        /* Интерфейс поверх карты */
-        #ui-layer {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-            background: linear-gradient(to right, #f5f7fa, #e4edf5);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid #dbe4f0;
-        }
-        
-        /* Панель фильтров */
-        #filter-panel {
-            position: absolute;
-            top: 150px;
-            left: 10px;
-            z-index: 999;
-            background: linear-gradient(to bottom right, #ffffff, #f0f5ff);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid #dbe4f0;
-        }
-        
-        #filter-panel label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        #filter-panel select, #filter-panel input {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 5px;
-        }
-        
-        /* Поле поиска */
-        #search-box {
-            position: absolute; 
-            top: 10px; 
-            right: 10px; 
-            z-index: 998; 
-            background: linear-gradient(to bottom left, #ffffff, #f0f9ff); 
-            padding: 15px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid #dbe4f0;
-        }
-        
-        #search-box input, #search-box button {
-            margin: 2px 0;
-        }
-        
-        /* Стили кластеров */
-        .marker-cluster-square {
-            background-color: rgba(181, 226, 140, 0.4);
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-
-        .marker-cluster-triangle {
-            background-color: rgba(241, 128, 23, 0.5);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        
-        .marker-cluster-hexagon {
-            background-color: rgba(241, 70, 70, 0.6);
-            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        
-        .marker-cluster div {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style> -->
 </head>
 <body>
-
-    <!-- <div id="ui-layer">
-        <h3>Карта Метеоритов</h3>
-        <p>Используйте переключатель в углу карты.</p>
-    </div> -->
-    
-    <!-- Панель фильтров -->
     <div id="filter-panel">
         <label for="year-filter">Фильтр по году:</label>
         <select id="year-filter">
@@ -199,16 +77,14 @@
         </div>
     </div>
 </div>
-    <!-- Контейнер карты -->
     <div id="map"></div>
 
-<!-- Подключаем недостающие библиотеки -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
     <script>
-        // Глобальный массив для хранения всех маркеров и данных
+        //  массив для хранения всех маркеров и данных
         let allMarkers = [];
         let filteredMarkers = []; // Для хранения отфильтрованных маркеров
         // Инициализация карты
@@ -234,7 +110,7 @@
             popupAnchor: [0, -12]
         });
 
-        // === СЛОВАРЬ ФОТОГРАФИЙ ДЛЯ КОНКРЕТНЫХ МЕТЕОРИТОВ ===
+        //СЛОВАРЬ ФОТОГРАФИЙ ДЛЯ КОНКРЕТНЫХ МЕТЕОРИТОВ
         const meteoritePhotos = {
             "Chelyabinsk": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Chelyabinsk_meteorite_fragment.jpg/800px-Chelyabinsk_meteorite_fragment.jpg",
             "Sikhote-Alin": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Sikhote-Alin_meteorite.jpg/800px-Sikhote-Alin_meteorite.jpg",
@@ -243,20 +119,15 @@
             "Murchison": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Murchison_meteorite.jpg/800px-Murchison_meteorite.jpg",
             "NWA 869": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/NWA_869_meteorite.jpg/800px-NWA_869_meteorite.jpg",
             
-            // Добавляй сюда свои метеориты в формате:
-            // "Точное_Название_Метеорита": "прямая_ссылка_на_картинку",
+
             "Sikhote-Alin": "https://upload.wikimedia.org/wikipedia/commons/a/ab/SikhoteAlinMeteorite.jpg",
             "Allan Hills A77005": "https://cdn2.picryl.com/photo/2019/04/04/alha-allanhills77005-interior-martianmeteorite-ebbcf3-640.gif",
 
-            // Пример:
-            // "Meteorite Name": "https://example.com/photo.jpg"
         };
 
-        // Событие: когда открывается любой попап на карте
         map.on('popupopen', function(e) {
             const popup = e.popup;
-            
-            // Правильный способ получить DOM-элемент попапа
+
             const contentElement = popup.getElement ? popup.getElement() : null;
             if (!contentElement) return;
 
@@ -265,15 +136,13 @@
 
             const meteoriteName = infoDiv.dataset.name;
             
-            // Создаём контейнер для фото
+
             const imgContainer = document.createElement('div');
             imgContainer.className = 'image-loader';
             imgContainer.innerHTML = '<small>Загрузка фото...</small>';
-            
-            // Вставляем перед заголовком
+
             infoDiv.insertBefore(imgContainer, infoDiv.firstChild);
 
-            // Загружаем фото
             findMeteoriteImage(meteoriteName).then(imageUrl => {
                 if (imageUrl) {
                     imgContainer.innerHTML = `
@@ -291,7 +160,7 @@
                 imgContainer.remove();
             });
         });
-        // Слои карты
+
         const baseLayers = {
             '🛰️ Спутник': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 19,
@@ -311,16 +180,13 @@
             })
         };
 
-        // Добавляем слой по умолчанию
         baseLayers['🛰️ Спутник'].addTo(map);
 
-        // Переключатель слоев
         L.control.layers(baseLayers, null, {
             position: 'topright',
             collapsed: true
         }).addTo(map);
 
-        // Создаем группу для кластеров
         const markers = L.markerClusterGroup({
             iconCreateFunction: function(cluster) {
                 const childCount = cluster.getChildCount();
@@ -369,10 +235,9 @@
             showCoverageOnHover: false
         });
         map.addLayer(markers);
-        // Управление отображением названий метеоритов
         function updateLabels() {
             const currentZoom = map.getZoom();
-            const showLabels = currentZoom >= 7;   // ← Измените число, если нужно (6 = раньше, 8 = позже)
+            const showLabels = currentZoom >= 7;  
 
             markers.eachLayer(function(layer) {
                 if (layer.getTooltip()) {
@@ -388,7 +253,6 @@
         // Обновляем при изменении зума
         map.on('zoomend', updateLabels);
 
-        // Первоначальная проверка
         updateLabels();
 
         // Загружаем и обрабатываем CSV
@@ -401,13 +265,13 @@
                 results.data.forEach(row => {
                     const lat = parseFloat(row.reclat);
                     const lng = parseFloat(row.reclong);
-                    // Пропускаем записи без координат или с нулевыми координатами
+
                     if (!isNaN(lat) && !isNaN(lng) && !(lat === 0 && lng === 0)) {
                         addMarker(lat, lng, row);
                         validCount++;
                     }
                 });
-                console.log(`✅ Загружено ${validCount} метеоритов`);
+                console.log(` Загружено ${validCount} метеоритов`);
                 // После загрузки данных применяем начальные фильтры
                 applyFilters();
             },
@@ -438,9 +302,9 @@
 
             marker.bindPopup(popupContent);
 
-            //Привязываем название как tooltip
+
             marker.bindTooltip(data.name, {
-                permanent: false,      // по умолчанию скрыто
+                permanent: false,      
                 direction: 'top',
                 offset: [0, -8],
                 className: 'meteor-label',
@@ -492,7 +356,7 @@
                 markers.addLayer(item.marker);
             });
             
-            console.log(`✅ Отображено ${filteredMarkers.length} метеоритов после фильтрации`);
+            console.log(`Отображено ${filteredMarkers.length} метеоритов после фильтрации`);
         }
         
         // Функция сброса фильтров
@@ -503,8 +367,6 @@
             applyFilters();
         }
 
-        // Тестовый маркер (можно удалить)
-       // L.marker([55.75, 37.61]).addTo(map).bindPopup('Москва. Переключите стиль!');
         function searchMeteorite() {
             const input = document.getElementById('meteorite-search');
             const resultDiv = document.getElementById('search-result');
@@ -515,7 +377,7 @@
                 return;
             }
 
-            // Ищем точное совпадение (регистронезависимо)
+ 
             const found = filteredMarkers.find(item => 
                 item.data.name.toLowerCase() === query.toLowerCase()
             );
@@ -523,8 +385,8 @@
             if (found) {
                 const lat = parseFloat(found.data.reclat);
                 const lng = parseFloat(found.data.reclong);
-                map.setView([lat, lng], 12); // Приближаем до зума 8
-                found.marker.openPopup();   // Открываем попап
+                map.setView([lat, lng], 12); 
+                found.marker.openPopup();   
                 resultDiv.textContent = '';
             } else {
                 resultDiv.textContent = 'Метеорит не найден';
@@ -532,12 +394,10 @@
         }
 
         async function findMeteoriteImage(meteoriteName) {
-            // 1. Сначала проверяем ручные фотографии
             if (meteoritePhotos[meteoriteName]) {
                 return meteoritePhotos[meteoriteName];
             }
 
-            // 2. Если нет — пытаемся взять с Википедии
             try {
                 const apiUrl = `https://en.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(meteoriteName)}`;
                 const response = await fetch(apiUrl);
@@ -555,7 +415,6 @@
             
             return null;
         }
-        // Дополнительно: поиск по Enter
         document.getElementById('meteorite-search').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 searchMeteorite();
