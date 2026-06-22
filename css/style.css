@@ -1,4 +1,4 @@
-/* grid */
+
 :root {
     --primary-color: #4a6fa5;
     --secondary-color: #166088;
@@ -15,13 +15,11 @@ body {
   color: #333;
 }
 
-/* Карта обязана иметь высоту */
 #map { 
     height: 100vh; 
     width: 100%; 
 }
 
-/* Интерфейс поверх карты */
 #ui-layer {
     position: absolute;
     top: 10px;
@@ -132,9 +130,9 @@ body {
 /* Поле поиска */
 #search-box {
     position: absolute; 
-    top: 10px; /* Увеличено с 10px, чтобы начинаться ниже блока переключения */
+    top: 10px;
     left: 10px; 
-    z-index: 2000; /* Увеличено с 1002 для уверенности */
+    z-index: 2000;
     background: linear-gradient(135deg, white, #f0f9ff);
     padding: 15px;
     border-radius: 10px;
@@ -186,18 +184,17 @@ body {
     color: #d32f2f;
     min-height: 18px;
 }
-/* Убираем специфические элементы управления для полей числового ввода */
 #filter-panel input[type="number"] {
-    -moz-appearance: textfield; /* Для Firefox */
+    -moz-appearance: textfield; 
 }
 
 #filter-panel input[type="number"]::-webkit-outer-spin-button,
 #filter-panel input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none; /* Для Chrome, Safari, Edge */
+    -webkit-appearance: none; 
     margin: 0;
 }
 
-/* Стили кластеров */
+
 .marker-cluster-square {
     background-color: rgba(241, 128, 23, 0.5);
     border-radius: 0;
@@ -242,7 +239,7 @@ body {
     align-items: center;
     justify-content: center;
 }
-/* Легенда */
+
 #legend-panel {
     position: absolute;
     bottom: 20px;
@@ -280,7 +277,6 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
-/* Кластеры в легенде — точно как на карте */
 .cluster-legend {
     display: inline-flex;
     align-items: center;
@@ -301,14 +297,13 @@ body {
 
 .cluster-legend.square {
     background-color: rgba(241, 128, 23, 0.85);
-    border-radius: 4px;           /* как в реальном кластере */
+    border-radius: 4px;         
 }
 
 .cluster-legend.hexagon {
     background-color: rgba(241, 70, 70, 0.85);
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
-/* Названия метеоритов */
 .meteor-label {
     background-color: rgba(255, 255, 255, 0.95);
     border: 1px solid #4a6fa5;
